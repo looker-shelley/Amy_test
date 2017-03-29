@@ -17,46 +17,47 @@ include: "*.dashboard.lookml"  # include all dashboards in this project
 #     sql_on: ${users.id} = ${orders.user_id} ;;
 #   }
 # }
-
-explore: order_items {
-  from: order_items
-  join: orders {
+############# Order Items Explore #################
+explore: products {
+  label: "Order Items"
+  from: products
+  join: inventory_items {
+    type: inner
+    relationship: one_to_many
+    sql_on: ${products.id} = ${inventory_items.product_id} ;;
+}
+  join:  order_items {
+    type: inner
+    relationship: one_to_many
+    sql_on: ${inventory_items.id} = ${order_items.inventory_item_id} ;;
+}
+  join: orders{
     type:  inner
-    relationship:  many_to_one
-    sql_on:  ${order_items.order_id} = ${orders.id} ;;
+    relationship: many_to_one
+    sql_on: ${order_items.order_id} = ${orders.id} ;;
   }
-
   join: users {
     type:  inner
     relationship:  many_to_one
-    sql_on: ${orders.user_id} = ${users.id} ;;
+    sql_on: ${orders.user_id} =  ${users.id}  ;;
   }
 
 }
 
-explore: products {
-  join:  inventory_items {
-    view_label: "Inventory"
-    type: inner
-    relationship:  one_to_many
-    sql_on: ${products.id} = ${inventory_items.product_id} ;;
+
+
+############## Users Explore #################
+explore: users {
+  label: "Users"
+  join: orders {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${users.id} = ${orders.user_id} ;;
   }
 
   join: order_items {
-    type:  inner
-    relationship:  one_to_many
-    sql_on: ${inventory_items.id}= ${order_items.inventory_item_id} ;;
-  }
-
-  join: orders {
-    type: inner
-    relationship: many_to_one
-    sql_on: ${order_items.order_id} = ${orders.id} ;;
-  }
-
-  join: users {
-    type:  inner
-    relationship:  many_to_one
-    sql_on: ${orders.user_id} = ${users.id} ;;
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${orders.id}  = ${order_items.order_id};;
   }
 }
