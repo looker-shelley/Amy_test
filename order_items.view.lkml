@@ -9,13 +9,13 @@ view: order_items {
 
   dimension: inventory_item_id {
     type: number
-    # hidden: yes
+    hidden: yes
     sql: ${TABLE}.inventory_item_id ;;
   }
 
   dimension: order_id {
     type: number
-    # hidden: yes
+    hidden: yes
     sql: ${TABLE}.order_id ;;
   }
 
@@ -54,8 +54,30 @@ view: order_items {
     sql:  ${sale_price} ;;
   }
 
-  measure: disctinct_total_sale_price {
-    type:  sum_distinct
+  measure: total_gross_revenue {
+    type: sum
     sql: ${sale_price} ;;
+    filters: {
+      field: returned_date
+      value: "NULL"
+    }
+  }
+
+  dimension: is_returned {
+    type: yesno
+    sql: ${returned_date} is not NULL ;;
+  }
+
+  measure: count_returned {
+    type:  count
+      filters: {
+      field: returned_date
+      value: "-NULL"
+    }
+  }
+
+  measure: item_return_rate {
+    type: number
+    sql: ${count_returned}/NULLIF(${count},0) ;;
   }
 }

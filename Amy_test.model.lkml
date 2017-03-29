@@ -55,19 +55,8 @@ explore: products {
   }
 
   join: users {
-    fields: [users.id, users.zip, users.country,users.state,users.city, users.age, users.age_tier]
     type:  inner
     relationship:  many_to_one
     sql_on: ${orders.user_id} = ${users.id} ;;
   }
-}
-
-explore: brand {
-  from: products
-  always_filter: {
-    filters: {
-      field: category
-    }
-  }
-  sql_always_having: ${total_retail_price} > 20 ;;
 }

@@ -89,17 +89,22 @@ view: users {
     drill_fields: [detail*]
   }
 
-  measure:  count_in_NYC {
+  measure:  count_users_returned {
     type: count
     filters: {
-      field: state
-      value: "New York"
+      field: order_items.is_returned
+      value: "Yes"
     }
   }
 
-  dimension: is_new_user {
-    type: yesno
-    sql: DATEDIFF(CURDATE(),${created_date}) < 30 ;;
+  measure: perc_user_returns {
+    type: number
+    sql: ${count_users_returned}/NULLIF(${count},0) ;;
+  }
+
+  measure: avg_spend_per_user {
+    type: number
+    sql: ${order_items.total_sale_price}/NULLIF(${count},0) ;;
   }
 
   # ----- Sets of fields for drilling ------

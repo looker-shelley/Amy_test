@@ -58,14 +58,23 @@ view: inventory_items {
     sql:  ${cost} ;;
   }
 
-  measure: min_total_cost {
-    type: min
+  measure: avg_cost {
+    type: average
     sql: ${cost} ;;
   }
 
-  measure: total_profit {
+  measure: total_gross_margin {
     type:  sum
     sql: ${order_items.sale_price} - ${cost} ;;
   }
 
+  measure: avg_gross_margin {
+    type:  average
+    sql: ${order_items.sale_price} - ${cost} ;;
+  }
+
+  measure: gross_margin_perc {
+    type:  number
+    sql: ${total_gross_margin}/NULLIF(${order_items.total_gross_revenue},0) ;;
+  }
 }
