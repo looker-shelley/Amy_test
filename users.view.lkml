@@ -1,5 +1,5 @@
 view: users {
-  sql_table_name: demo_db.users ;;
+  sql_table_name: public.users ;;
 
   dimension: id {
     primary_key: yes
@@ -14,7 +14,7 @@ view: users {
 
   dimension: age_tier {
     type: tier
-    tiers: [0,20,40,60,80,100]
+    tiers: [15,25,35,50,65]
     style: integer
     sql: ${age} ;;
   }
@@ -71,6 +71,12 @@ view: users {
   dimension: state {
     type: string
     sql: ${TABLE}.state ;;
+    map_layer_name: us_states
+  }
+
+  dimension: traffic_source {
+    type:  string
+    sql: ${TABLE}.traffic_source ;;
   }
 
   dimension: zip {
@@ -82,6 +88,11 @@ view: users {
   dimension: zipcode {
     type:  zipcode
     sql:  ${zip} ;;
+  }
+
+  dimension: is_new_users {
+    type: yesno
+    sql: DATEDIFF(day,${created_date},CURRENT_DATE)<= 90;;
   }
 
   measure: count {
@@ -97,14 +108,15 @@ view: users {
     }
   }
 
-  measure: perc_user_returns {
-    type: number
-    sql: ${count_users_returned}/NULLIF(${count},0) ;;
-  }
+#  measure: perc_user_returns {
+#    type: number
+#    sql: ${count_users_returned}/NULLIF(${count},0) ;;
+#  }
 
   measure: avg_spend_per_user {
     type: number
     sql: ${order_items.total_sale_price}/NULLIF(${count},0) ;;
+    drill_fields: [age_tier,gender,avg_spend_per_user]
   }
 
   # ----- Sets of fields for drilling ------

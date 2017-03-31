@@ -1,5 +1,5 @@
 view: products {
-  sql_table_name: demo_db.products ;;
+  sql_table_name: public.products ;;
 
   dimension: id {
     primary_key: yes
@@ -10,6 +10,15 @@ view: products {
   dimension: brand {
     type: string
     sql: ${TABLE}.brand ;;
+    drill_fields: [category, item_name]
+    link: {
+      label: "Google link"
+      url: "https://www.google.co.uk/#q={{ value }}&*"
+    }
+    link: {
+      label: "Facebook link"
+      url: "https://www.facebook.com/search/top/?q={{ value }}"
+    }
   }
 
   dimension: category {

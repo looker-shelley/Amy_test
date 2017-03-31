@@ -1,5 +1,5 @@
 view: order_items {
-  sql_table_name: demo_db.order_items ;;
+  sql_table_name: public.order_items ;;
 
   dimension: id {
     primary_key: yes
@@ -76,8 +76,9 @@ view: order_items {
     }
   }
 
-  measure: item_return_rate {
-    type: number
-    sql: ${count_returned}/NULLIF(${count},0) ;;
-  }
+#  measure: item_return_rate {
+#    type: number
+#    sql: 100*(${count_returned}/NULLIF(${count},0)) ;;
+#    value_format: "0.000;0.000"
+#  }
 }

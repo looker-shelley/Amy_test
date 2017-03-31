@@ -1,5 +1,5 @@
 view: inventory_items {
-  sql_table_name: demo_db.inventory_items ;;
+  sql_table_name: public.inventory_items ;;
 
   dimension: id {
     primary_key: yes
@@ -66,6 +66,7 @@ view: inventory_items {
   measure: total_gross_margin {
     type:  sum
     sql: ${order_items.sale_price} - ${cost} ;;
+    drill_fields: [products.category, products.brand, total_gross_margin]
   }
 
   measure: avg_gross_margin {
@@ -76,6 +77,6 @@ view: inventory_items {
   measure: gross_margin_perc {
     type:  number
     sql: ${total_gross_margin}/NULLIF(${order_items.total_gross_revenue},0) ;;
-    value_format: "0.00%;-0.00%"
+    value_format: "0.0%;-0.0%"
   }
 }

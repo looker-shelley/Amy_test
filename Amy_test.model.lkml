@@ -1,4 +1,4 @@
-connection: "thelook"
+connection: "red_look"
 
 include: "*.view.lkml"         # include all views in this project
 include: "*.dashboard.lookml"  # include all dashboards in this project
@@ -21,6 +21,11 @@ include: "*.dashboard.lookml"  # include all dashboards in this project
 explore: products {
   label: "Order Items"
   from: products
+  join: product_facts {
+    type: inner
+    relationship: one_to_one
+    sql_on: ${products.id} = ${product_facts.product_id} ;;
+  }
   join: inventory_items {
     type: inner
     relationship: one_to_many
