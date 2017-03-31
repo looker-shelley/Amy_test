@@ -76,5 +76,6 @@ view: inventory_items {
   measure: gross_margin_perc {
     type:  number
     sql: ${total_gross_margin}/NULLIF(${order_items.total_gross_revenue},0) ;;
+    value_format: "0.00%;-0.00%"
   }
 }
