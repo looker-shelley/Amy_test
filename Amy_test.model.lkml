@@ -66,3 +66,36 @@ explore: users {
     sql_on: ${orders.id}  = ${order_items.order_id};;
   }
 }
+
+############# Users Lifetime Data ###############
+explore: user_lifetime_data {
+  join: users {
+    type: inner
+    relationship: one_to_one
+    sql_on: ${user_lifetime_data.id}=${users.id} ;;
+  }
+
+  join: orders {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${users.id} = ${orders.user_id} ;;
+  }
+
+  join: order_items {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${orders.id}  = ${order_items.order_id};;
+  }
+
+  join: inventory_items {
+    type: left_outer
+    relationship:  many_to_one
+    sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
+  }
+
+  join: products {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${inventory_items.product_id} = ${products.id} ;;
+  }
+}
