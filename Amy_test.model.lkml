@@ -19,6 +19,7 @@ include: "*.dashboard.lookml"  # include all dashboards in this project
 # }
 ############# Order Items Explore #################
 explore: products {
+  description: "Detailed order information"
   label: "Order Items"
   from: products
   join: product_facts {
@@ -51,24 +52,25 @@ explore: products {
 
 
 
-############## Users Explore #################
-explore: users {
-  label: "Users"
-  join: orders {
-    type: left_outer
-    relationship: one_to_many
-    sql_on: ${users.id} = ${orders.user_id} ;;
-  }
-
-  join: order_items {
-    type: left_outer
-    relationship: one_to_many
-    sql_on: ${orders.id}  = ${order_items.order_id};;
-  }
-}
+# ############## Users Explore #################
+# explore: users {
+#   label: "Users"
+#   join: orders {
+#     type: left_outer
+#     relationship: one_to_many
+#     sql_on: ${users.id} = ${orders.user_id} ;;
+#   }
+#
+#   join: order_items {
+#     type: left_outer
+#     relationship: one_to_many
+#     sql_on: ${orders.id}  = ${order_items.order_id};;
+#   }
+# }
 
 ############# Users Lifetime Data ###############
 explore: user_lifetime_data {
+  description: "Detailed analysis of user data"
   join: users {
     type: inner
     relationship: one_to_one

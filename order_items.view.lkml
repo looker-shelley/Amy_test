@@ -49,6 +49,11 @@ view: order_items {
     sql:  ${sale_price} ;;
   }
 
+  measure: cumulative_total_sale_price {
+    type:  running_total
+    sql: ${total_sale_price} ;;
+  }
+
   measure:  avg_sale_price {
     type: average
     sql:  ${sale_price} ;;

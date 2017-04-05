@@ -1,6 +1,6 @@
 view: user_lifetime_data {
   derived_table: {
-    sql: select users.id
+    sql: select users.id as "user_id"
       , count(distinct orders.id) as "order_count"
       , sum(order_items.sale_price) as "total_revenue"
       , min(orders.created_at) as "first_order"
@@ -12,6 +12,9 @@ view: user_lifetime_data {
       on orders.id = order_items.order_id
       group by users.id
        ;;
+      sql_trigger_value: Select CURRENT_DATE ;;
+      sortkeys: ["user_id"]
+      distribution_style: all
   }
 
   measure: count {
@@ -23,7 +26,7 @@ view: user_lifetime_data {
   dimension: id {
     primary_key: yes
     type: number
-    sql: ${TABLE}.id ;;
+    sql: ${TABLE}.user_id ;;
   }
 
   dimension: order_count {
@@ -61,6 +64,7 @@ view: user_lifetime_data {
   }
 
   dimension: total_revenue_tier {
+    description: "Revenue seperated into tiers "
     type: tier
     tiers: [5,20,50,100,500,1000]
     style: relational
