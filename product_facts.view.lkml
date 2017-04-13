@@ -22,3 +22,12 @@ view: product_facts {
     drill_fields: [name, products.id, products.item_name]
   }
 }
+
+view: product_facts_finance {
+  extends: [product_facts]
+  dimension: full_name {
+    type: string
+    sql: ${TABLE}.name ;;
+  }
+}
+explore: product_facts_finance {}
