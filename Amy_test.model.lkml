@@ -42,6 +42,12 @@ explore: products {
     relationship: many_to_one
     sql_on: ${order_items.order_id} = ${orders.id} ;;
   }
+  join: order_user_sequence {
+    type: inner
+    relationship:  one_to_one
+    sql_on: ${orders.id} = ${order_user_sequence.orders_id} ;;
+  }
+
   join: users {
     type:  inner
     relationship:  many_to_one
@@ -119,6 +125,12 @@ explore: user_lifetime_data {
     type: left_outer
     relationship: one_to_many
     sql_on: ${users.id} = ${orders.user_id} ;;
+  }
+
+  join: order_user_sequence {
+    type: inner
+    relationship:  one_to_one
+    sql_on: ${orders.id} = ${order_user_sequence.orders_id} ;;
   }
 
   join: order_items {
